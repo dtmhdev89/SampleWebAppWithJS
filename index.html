@@ -4,14 +4,136 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="u-xa-compatible" content="ie=edge">
+	<meta name="theme-color" content="#4285f4"> <!-- hien thi tren chrome firefox opera for android phone -->
+	<meta name="msapplication-navbutton-color" content="#4285f4"> <!--for windows phone-->
+	<meta name="apple-mobie-web-app-status-bar-style" content="#4285f4"> <!--For safari in iPhone-->
+	<meta name="description" content="Weather Application">
+	<meta name="keywords" content="Weather Application, Weather">
+	<meta name="author" content="Georgian Stan Tutorial">
+	<!-- <meta http-equiv="refresh" content="10">  refresh document every 10 seconds-->
 	<title>Weather Application</title>
 
+	<!-- google font -->
+	<link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet">
+
+	<!-- other css -->
+	<link rel="stylesheet" type="text/css" href="style/reset-css.css">
+	<link rel="stylesheet" type="text/css" href="style/loader.css">
+	<link rel="stylesheet" type="text/css" href="style/ripple.css">
+
 	<!-- my css -->
-	<link rel="stylesheet" href="./style/index.css">
-	
+	<link rel="stylesheet" type="text/css" href="style/index.css">
+
+	<!-- favicon -->
+	<link rel="icon" type="image/x-icon" href="assets/images/icons/favicon96x96.ico">
+
 </head>
 <body>
+<div class="lds-dual-ring center display-none"></div>
+<main>
+	<button id="open-menu-btn" class="riple">
+		<img class="icon-sm-28" src="assets/images/icons/menu.png" alt="menu">
+	</button>
 
-<script type="text/javascript" src="./script/index.js"></script>
+	<!-- currently weather section -->
+	<section id="current-day-weather-container">
+		<h1 class="location-label">Brasov</h1>
+		<div id="temperature-summary-container" class="flex-container">
+			<div>
+				<img src="assets/images/summary-icons/clear-day-white.png" alt="">
+			</div>
+
+			<div>
+				<h1 id="degrees-label">20&#176</h1>
+				<p id="summary-label">Clear Day</p>
+			</div>
+		</div>
+
+		<div id="humidity-wind-container" class="flex-container">
+			<div>
+				<img class="icon-sm-30" src="assets/images/icons/humidity.png" alt="humidity icon">
+				<span>20%</span>
+			</div>
+			
+			<div>
+				<img class="icon-sm-30" src="assets/images/icons/wind-speed-flag.png" alt="humidity icon">
+				<span>3 m/h</span>
+			</div>
+		</div>
+	</section>
+
+	<!-- 	lower panel-->
+	<section class="lower-panel">
+		<button id="toggle-hourly-weather" class="ripple center_x">
+			<img src="assets/images/icons/up-arrow.png" alt="up arrow icon">
+		</button>
+
+		<!-- daily weather -->
+		<div id="daily-weather-wrapper" class="lower-panel-body">
+			<div class="flex-container weather-box current-day-of-the-week">
+				<div>
+					<h1>Sunday</h1>
+				</div>
+				<div class="flex-container">
+					<div>
+						<p>18&#176</p>
+					</div>
+					<div>
+						<img class="icon-sm-30" src="assets/images/summary-icons/clear-day-white.png" alt="clear day white">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--hourly weather-->
+		<div id="hourly-weather-wrapper" class="lower-panel-body">
+			<div class="flex-container weather-box current-day-of-the-week">
+				<div>
+					<h1>14:00</h1>
+				</div>
+				<div class="flex-container">
+					<div>
+						<p>18&#176</p>
+					</div>
+					<div>
+						<img class="icon-sm-30" src="assets/images/summary-icons/clear-day-grey.png" alt="clear day white">
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- menu container -->
+	<section id="menu-container">
+		<button id="close-menu-btn" class="ripple">
+			&#10006;
+		</button>
+
+		<!-- container -->
+		<div>
+			<!--location wrapper-->
+			<div id="add-location-wrapper">
+				<input type="text" placeholder="Location" id="location-input">
+				<br>
+				<button class="ripple disabled" id="add-city-btn" disabled>Add City</button>
+				<h1 class="location-label">Brasov</h1>
+			</div>
+
+			<!-- saved cities -->
+			<div id="saved-cities-wrapper">
+				<div class="flex-container saved-city-box">
+					<div class="ripple">
+						<h1>Brasov</h1>
+					</div>
+					<div>
+						<button class="ripple remove-saved-cities"></button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</section>
+</main>
+<script type="text/javascript" src="script/index.js"></script>
 </body>
 </html>
