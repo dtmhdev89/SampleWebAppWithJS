@@ -192,7 +192,11 @@ button
 	z-index: 3;
 	position: absolute;
 	transform: translate(-50%, -50%);
-}
+}	
+
+	#toggle-hourly-weather img{
+		transition: transform 0.5s;
+	}
 
 .weather-box
 {
@@ -232,6 +236,7 @@ button
 #daily-weather-wrapper
 {
 	background-color: rgba(0, 0, 0, 0.6);
+	transition: opacity 0.5s;
 }
 
 /* 	--------hourly-weather-wrapper--------*/
