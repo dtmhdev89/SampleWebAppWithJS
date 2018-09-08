@@ -229,6 +229,89 @@ const LOCALSTORAGE = (function(){
 
 })();
 
+/*============Saved Cities module
+*
+*
+*
+this module will be responsible for showing on the UI saved cities from the local storage.
+and from here user will be able to delete or switch between the city he wants to see data 
+*
+*
+*
+*
+===========*/
+
+const SAVEDCITIES =(function(){
+
+	let container = document.querySelector('#saved-cities-wrapper');
+
+	const drawCity = (city)=>{
+
+		let cityBox = document.createElement('div'),
+			cityWrapper = document.createElement('div'),
+			cityTextNode = document.createElement('h1'),
+			deleteWrapper = document.createElement('div'),
+			deleteBtn = document.createElement('button');
+
+			cityBox.classList.add('flex-container', 'saved-city-box');
+			cityWrapper.classList.add('ripple','set-city');
+			cityTextNode.classList.add('set-city');
+			cityTextNode.innerHTML=city;
+			cityWrapper.appendChild(cityTextNode);
+			cityBox.appendChild(cityWrapper);
+
+			deleteWrapper.appendChild(deleteBtn);
+			deleteBtn.classList.add('ripple', 'remove-saved-cities');
+			deleteBtn.innerHTML='-';
+			cityBox.appendChild(deleteWrapper);
+
+			container.appendChild(cityBox);
+	};
+
+	const _deleteCity = (cityHTMLBtn)=>{
+
+
+		let nodes = Array.prototype.slice.call(container.children),
+			cityWrapper = cityHTMLBtn.closest('.saved-city-box'),
+			cityIndex = nodes.indexOf(cityWrapper);
+
+			LOCALSTORAGE.remove(cityIndex);
+
+			cityWrapper.remove(cityIndex);
+	};
+
+	document.addEventListener('click', function(event){
+
+		if(event.target.classList.contains('remove-saved-cities')){
+
+			_deleteCity(event.target);
+		};
+
+	});
+
+	document.addEventListener('click', function(event){
+
+		if(event.target.classList.contains('set-city')){
+
+			let nodes = Array.prototype.slice.call(container.children),
+			cityWrapper = event.target.closest('.saved-city-box'),
+			cityIndex = nodes.indexOf(cityWrapper);
+			savedCities = LOCALSTORAGE.getSavedCities();
+			console.log(cityIndex);
+			console.log(savedCities);
+
+			WEATHER.getWeather(savedCities[cityIndex],false);
+		};
+
+	});
+
+	return {
+		drawCity
+	}
+
+})();
+
+
 
 /*============Get Location Module
 *
@@ -255,7 +338,7 @@ const GETLOCATION = (function() {
         locationInput.value = "";
         addCityBtn.setAttribute('disabled', 'true');
         addCityBtn.classList.add('disabled');
-        WEATHER.getWeather(location);
+        WEATHER.getWeather(location,true);
     };
 
     locationInput.addEventListener('input', function() {
@@ -314,7 +397,7 @@ const WEATHER = (function() {
             });
     };
 
-    const getWeather = (location) => {
+    const getWeather = (location,save) => {
 
         UI.loadApp();
 
@@ -323,6 +406,18 @@ const WEATHER = (function() {
         axios.get(geoCodeURL)
             .then((response) => {
 
+            	if (response.data.results.length == 0){
+            		console.error('invalid location');
+            		alert("Invalid Location. Please, reinput it correctly!");
+            		UI.showApp();
+            		return;
+            	};
+
+            	if(save){
+            		LOCALSTORAGE.save(location);
+            		SAVEDCITIES.drawCity(location);
+            	}
+            	
                 let lat = response.data.results[0].geometry.lat,
                     lng = response.data.results[0].geometry.lng;
 
@@ -352,5 +447,13 @@ const WEATHER = (function() {
 
 window.onload = function() {
 
-    UI.showApp();
+	LOCALSTORAGE.get();
+	let cities = LOCALSTORAGE.getSavedCities();
+	if(cities.length != 0){
+		cities.forEach((city)=>SAVEDCITIES.drawCity(city));
+		WEATHER.getWeather(cities[cities.length -1],false);
+	}else {
+		UI.showApp();
+	}
+    
 };
